@@ -16,6 +16,6 @@ test('ship placement', () => {
     const carrier = createShip(5);
     newBoard.board[1][1].shipInfo = carrier;
 
-    expect(newBoard.board[1][1].shipInfo).toHaveProperty('length', 5);
+    expect(() => newBoard.placeShip(carrier, -1, 12, "horizontal")).toThrow("Ship placement is out of bounds");
 });
 
