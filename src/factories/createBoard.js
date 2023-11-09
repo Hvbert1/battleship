@@ -7,7 +7,9 @@ const createBoard = () => {
         for (let j = 0; j < boardSize; j++) {
             const cell = {
                 row: i,
-                col: j
+                col: j,
+                placed: false,
+                shipInfo: null,
             };
             row.push(cell);
         }

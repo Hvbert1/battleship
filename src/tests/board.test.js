@@ -1,4 +1,6 @@
 const createBoard = require('../factories/createBoard');
+const createShip = require('../factories/createShip');
+
 
 test('board initialised', () => {
     const newBoard = createBoard();
@@ -11,7 +13,9 @@ test('ship placement', () => {
     const newBoard = createBoard();
 
     newBoard.board[1][1].placed = true;
+    const carrier = createShip(5);
+    newBoard.board[1][1].shipInfo = carrier;
 
-    expect(newBoard.board[1][1]).toHaveProperty('placed', true);
+    expect(newBoard.board[1][1].shipInfo).toHaveProperty('length', 5);
 });
 
