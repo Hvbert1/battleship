@@ -5,7 +5,10 @@ const createBoard = () => {
     for (let i = 0; i < boardSize; i++) {
         const row = [];
         for (let j = 0; j < boardSize; j++) {
-            const cell = [i];
+            const cell = {
+                row: i,
+                col: j
+            };
             row.push(cell);
         }
         board.push(row);
