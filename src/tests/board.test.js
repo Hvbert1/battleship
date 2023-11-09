@@ -20,18 +20,27 @@ test('ship placement', () => {
 
 
 test('test receive attack from input', () => {
-    // takes in coordinates
-    // checks if ship is there or not
-    // if ship there, send hit() function to ship
-    // else record coordinate of missed spot
-
     const newBoard = createBoard();
     const carrier = createShip(5);
 
     newBoard.placeShip(carrier, 1, 2, "horizontal")
+    newBoard.receiveAttack(2, 2);
 
-    expect(newBoard.receiveAttack(1, 2)).toBeTruthy();
+    // expect(newBoard.receiveAttack(2, 2)).toBeFalsy();
+    // expect(newBoard.board[1][2].shipInfo.hitTimes).toBe(1);
+    expect(newBoard.missedShots).toContainEqual({ row: 2, col: 2 });
 });
+
+test('check if all ships are sunk', () => {
+    const newBoard = createBoard();
+    const carrier = createShip(5);
+    // test case for no ships
+    // expect(newBoard.allShipsSunk()).toBeFalsy();
+
+    // test case for ships
+    newBoard.placeShip(carrier, 1, 2, "horizontal")
+    expect(newBoard.allShipsSunk()).toBeTruthy();
+})
 
 
 

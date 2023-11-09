@@ -1,6 +1,7 @@
 const createBoard = () => {
     const boardSize = 10;
     const board = [];
+    const missedShots = []
 
     for (let i = 0; i < boardSize; i++) {
         const row = [];
@@ -33,14 +34,37 @@ const createBoard = () => {
     }
 
     const receiveAttack = function(row, col) {
-        if (this.board[row][col].shipInfo !== null) {
+        const cellAttack = this.board[row][col];
+        if (cellAttack.shipInfo !== null) {
+            cellAttack.shipInfo.hit();
+
             return true;
-        } else return false;
-    }
+        } else {
+            this.missedShots.push({ row: row, col: col })
+            return false;
+        }
+    };
+
+    const allShipsSunk = function() {
+        for (let i = 0; i < boardSize; i++) {
+            for (let j = 0; j < boardSize; j++) {
+                if (this.board[i][j].shipInfo !== null ) {
+                    if (this.board[i][j].shipInfo.sunk) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
+            }
+        }
+    };
+    
     return {
         board,
+        missedShots,
         placeShip,
         receiveAttack,
+        allShipsSunk,
     }
 }
 
