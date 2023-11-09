@@ -14,8 +14,24 @@ test('ship placement', () => {
 
     newBoard.board[1][1].placed = true;
     const carrier = createShip(5);
-    newBoard.board[1][1].shipInfo = carrier;
 
     expect(() => newBoard.placeShip(carrier, -1, 12, "horizontal")).toThrow("Ship placement is out of bounds");
 });
+
+
+test('test receive attack from input', () => {
+    // takes in coordinates
+    // checks if ship is there or not
+    // if ship there, send hit() function to ship
+    // else record coordinate of missed spot
+
+    const newBoard = createBoard();
+    const carrier = createShip(5);
+
+    newBoard.placeShip(carrier, 1, 2, "horizontal")
+
+    expect(newBoard.receiveAttack(1, 2)).toBeTruthy();
+});
+
+
 
