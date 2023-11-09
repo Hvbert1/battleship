@@ -10,6 +10,7 @@ test('hit marker', () => {
 
 test('create sunk ship', () => {
     const carrier = createShip(5);
+    
     for (let i = 0; i < carrier.length; i++) {
         carrier.hit();
     }
