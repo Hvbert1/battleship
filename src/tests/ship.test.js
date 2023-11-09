@@ -1,4 +1,4 @@
-const { createShip } = require('../factories/createShip');
+const createShip = require('../factories/createShip');
 
 test('hit marker', () => {
     const carrier = createShip(5);
