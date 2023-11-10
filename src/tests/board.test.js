@@ -53,6 +53,10 @@ describe('Test for retrieve attack functions from input', () => {
         expect(testBoard.receiveAttack(2, 2)).toBeFalsy();
     });
 
+    test('returns true when attack hits', () => {
+        expect(testBoard.receiveAttack(1, 2)).toBeTruthy();
+    });
+
     test('checks hit times once attacked boat', () => {
         testBoard.receiveAttack(1, 2);
         testBoard.receiveAttack(1, 3);
