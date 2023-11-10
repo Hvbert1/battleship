@@ -14,6 +14,6 @@ const createShip = (length, hitTimes = 0, sunk = false) => {
       hit: hit,
       isSunk: isSunk,
     }
-  };
+};
   
-  module.exports = createShip;
+module.exports = createShip;
