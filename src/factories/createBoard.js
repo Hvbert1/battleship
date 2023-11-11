@@ -20,10 +20,10 @@ const createBoard = () => {
         if (row >= 0 && row + ship.length < boardSize && col >= 0 && col + ship.length < boardSize) {
             for (let i = 0; i < ship.length; i++) {
                 if (direction === "vertical") {
-                    this.board[row][col].shipInfo = ship;
+                    board[row][col].shipInfo = ship;
                     row++;
                 } else {
-                    this.board[row][col].shipInfo = ship;
+                    board[row][col].shipInfo = ship;
                     col++;
                 }
             }
@@ -33,13 +33,13 @@ const createBoard = () => {
     };
 
     const receiveAttack = function(row, col) {
-        const cellAttack = this.board[row][col];
+        const cellAttack = board[row][col];
 
         if (cellAttack.shipInfo !== null) {
             cellAttack.shipInfo.hit();
             return true;
         } else {
-            this.missedShots.push({ row: row, col: col })
+            missedShots.push({ row: row, col: col })
             return false;
         }
     };
@@ -47,7 +47,7 @@ const createBoard = () => {
     const allShipsSunk = function() {
         for (let i = 0; i < boardSize; i++) {
             for (let j = 0; j < boardSize; j++) {
-                if (this.board[i][j].shipInfo !== null && !this.board[i][j].shipInfo.sunk) {
+                if (board[i][j].shipInfo !== null && !board[i][j].shipInfo.sunk) {
                     return false;
                 }
             }
