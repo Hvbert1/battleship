@@ -1,20 +1,28 @@
+const { createPlayer, createBot } = require('../factories/createPlayer');
 const createBoard = require('../factories/createBoard');
-const createPlayer = require('../factories/createPlayer');
-const createShip = require('../factories/createShip');
 
-test('check player turn and attack nothing', () => {
+test('check player name', () => {
     const testBoard = createBoard();
     const testPlayer = createPlayer(testBoard, 'player');
 
-    expect(testPlayer.changeTurn(1, 1)).toBeFalsy();
+    expect(testPlayer.name).toMatch(/player/);
 });
 
-test('check player turn and attack ship', () => {
+test('check change player turn', () => {
     const testBoard = createBoard();
-    const testShip = createShip(5);
-    const newPlayer = createPlayer(testBoard, 'player');
+    const testPlayer = createPlayer(testBoard, 'player');
 
-    testBoard.placeShip(testShip, 1, 2, "horizontal");
+    testPlayer.changeTurn();
 
-    expect(newPlayer.changeTurn(1, 2)).toBeTruthy();
+    expect(testPlayer.getCurrentTurn()).toBe('AI');
+});
+
+test('computerSelection returns coordinates', () => {
+    const testBoard = createBoard();
+    const testBot = createBot(testBoard, 'AI');
+
+    expect(testBot.computerSelection()).toEqual(expect.objectContaining({
+        row: expect.any(Number),
+        col: expect.any(Number),
+    }));;
 });
