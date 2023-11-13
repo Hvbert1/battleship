@@ -33,3 +33,7 @@ body {
     justify-content: center;
     flex: 1;
 }
+
+#cell-s {
+    background: orange;
+}
