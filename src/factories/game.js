@@ -17,20 +17,14 @@ const mainGameLoop = () => {
 }
 
 const createShips = () => {
+    const shipNames = ['carrier', 'battleship', 'destroyer', 'submarine', 'patrolBoat']
     const allShips = [];
 
-    const carrier = createShip(5, 0, false);
-    const battleship = createShip(4, 0, false);
-    const destroyer = createShip(3, 0, false);
-    const submarine = createShip(2, 0, false);
-    const patrolBoat = createShip(1, 0, false);
-
-    allShips.push(carrier);
-    allShips.push(battleship);
-    allShips.push(destroyer);
-    allShips.push(submarine);
-    allShips.push(patrolBoat);
-
+    for (let i = shipNames.length; i > 0; i--) {
+        let newShip = shipNames[i]
+        newShip = createShip(i);
+        allShips.push(newShip);
+    }
     return allShips;
 }
 

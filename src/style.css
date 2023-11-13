@@ -34,6 +34,14 @@ body {
     flex: 1;
 }
 
-#cell-s {
+.cell-s {
     background: orange;
+}
+
+.cell-m {
+    background: blue;
+}
+
+.cell-h {
+    background: red;
 }

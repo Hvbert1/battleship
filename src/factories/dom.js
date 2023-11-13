@@ -44,20 +44,56 @@ function loadBoard(board) {
         grid.appendChild(row);
         for(let j = 0; j < board.board.length; j++) {
             var cell = document.createElement('div');
-
-            if (board.board[i][j].shipInfo !== null) {
-                cell.id = 'cell-s';
-            } else {
-                cell.id = 'cell-n'
-            }
             cell.classList.add('cell');
 
-            cell.innerText = i;
+            if (board.board[i][j].shipInfo !== null) {
+                cell.classList.add('cell-s');
+            } else {
+                cell.classList.add('cell-n');
+            }
+            cell.id = `${i}-${j}`;
+            cell.innerText = `${i}-${j}`;
+            cell.addEventListener('click', handleClick);
             row.appendChild(cell);
         }
     }
     return grid;
 };
+
+function handleClick(event) {
+    const cell = event.target;
+    const cellId = cell.id;
+    const [row, col] = cellId.split('-');
+
+    if (cell.classList.contains('clicked')) {
+        return;
+    }
+
+    console.log(`Clicked on cell at row ${row}, column ${col}`);
+    if (ai.board.receiveAttack(row, col)) {
+        cell.classList.remove('cell-s');
+        cell.classList.add('cell-h');
+        cell.classList.add('clicked');
+        console.log('Attack hit!');
+    } else {
+        console.log('Attack missed');
+        cell.classList.remove('cell-n');
+        cell.classList.add('cell-m');
+        cell.classList.add('clicked');
+    }
+
+    checkWin();
+}
+
+function checkWin() {
+    if (ai.board.allShipsSunk()) {
+        alert('You Win!');
+    } else if (player.board.allShipsSunk()) {
+        alert('You lose!');
+    } else {
+        return;
+    }
+}
 
 function loadPage() {
     loadHeader();
