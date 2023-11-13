@@ -1,33 +1,42 @@
 body {
-    background: pink;
+    background: #F7F8F9;
     height: 100%;
+    margin: 0;
 }
 
 #content {
     display: flex;
     flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    height: 100vh;
+}
+
+#header {
+    font-size: 2rem;
 }
 
 #mainContainer {
     display: flex;
     flex-direction: row;
-    gap: 1rem;
+    gap: 4rem;
 }
+
 .grid {
-    background: greenyellow;
     display: grid;
-    width: 500px;
-    height: 500px;
+    gap: .25rem;
+    width: 400px;
+    height: 400px;
 }
 
 .row {
     display: flex;
     justify-content: center;
+    gap: .25rem;
 }
 
 .cell {
     display: flex;
-    background: #3C8EA7;
     outline: solid;
     outline-width: thin;
     justify-content: center;
@@ -35,13 +44,13 @@ body {
 }
 
 .cell-s {
-    background: orange;
+    background: #D7C054;
 }
 
 .cell-m {
-    background: blue;
+    background: #F7F8F9;
 }
 
 .cell-h {
-    background: red;
+    background: #B55459;
 }
