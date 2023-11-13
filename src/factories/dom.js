@@ -25,7 +25,7 @@ function loadMain() {
     mainContainer.appendChild(board2);
 
     document.getElementById("content").appendChild(mainContainer);
-}
+};
 
 function loadBoard(j) {
     let grid = document.createElement("div");
@@ -38,15 +38,16 @@ function loadBoard(j) {
         for(let k = 0; k < j; k++) {
             var cell = document.createElement('div');
             cell.classList.add('cell');
+            cell.innerText = i;
             row.appendChild(cell);
         }
     }
     return grid;
-}
+};
 
 function loadPage() {
     loadHeader();
     loadMain();
-}
+};
 
 module.exports = loadPage;

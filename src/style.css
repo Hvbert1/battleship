@@ -1,0 +1,35 @@
+body {
+    background: pink;
+    height: 100%;
+}
+
+#content {
+    display: flex;
+    flex-direction: column;
+}
+
+#mainContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+.grid {
+    background: greenyellow;
+    display: grid;
+    width: 500px;
+    height: 500px;
+}
+
+.row {
+    display: flex;
+    justify-content: center;
+}
+
+.cell {
+    display: flex;
+    background: #3C8EA7;
+    outline: solid;
+    outline-width: thin;
+    justify-content: center;
+    flex: 1;
+}
