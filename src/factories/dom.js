@@ -88,15 +88,20 @@ function updateSurroundingCells(ship, boardId) {
         const cellElement = document.getElementById(`${boardId}-${cell.row}-${cell.col}`);
         if (cellElement) {
             cellElement.innerText = "✘";
+            cellElement.classList.add('clicked');
         }
     });
 }
 
 function checkWin() {
     if (ai.board.allShipsSunk()) {
-        alert('You Win!');
+        setTimeout(() => {
+            alert('You Win!');
+        }, 1500);
     } else if (player.board.allShipsSunk()) {
-        alert('You lose!');
+        setTimeout(() => {
+            alert('You Lose!');
+        }, 1500);
     } else {
         return;
     }
