@@ -26,19 +26,23 @@ const createBot = (board, name) => {
     const allShots = [];
 
     const randomNumber = () => {
-        return Math.floor(Math.random() * 9);
+        return Math.floor(Math.random() * 10);
     };
 
     const computerSelection = () => {
-        let randRow = randomNumber();
-        let randCol = randomNumber();
-
-        if(allShots.find((shot) => shot.row === randRow && shot.col === randCol)) {
-            return false;
-        } else {
-            allShots.push({ row: randRow, col: randCol });
-            return { row: randRow, col: randCol };
+        let maxAttempts = 50;
+    
+        while (maxAttempts > 0) {
+            let randRow = randomNumber();
+            let randCol = randomNumber();
+    
+            if (!allShots.find((shot) => shot.row === randRow && shot.col === randCol)) {
+                allShots.push({ row: randRow, col: randCol });
+                return { row: randRow, col: randCol };
+            }
+            maxAttempts--;
         }
+        return false; 
     };
 
     return {

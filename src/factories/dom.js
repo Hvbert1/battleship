@@ -49,7 +49,6 @@ function loadBoard(board, id) {
                 cell.classList.add('cell-n');
             }
             cell.id = `${id}-${i}-${j}`;
-            cell.innerText = `${i}-${j}`;
             cell.addEventListener('click', handleClick);
             row.appendChild(cell);
         }
@@ -80,7 +79,28 @@ function handleClick(event) {
         cell.classList.add('cell-m');
     }
     cell.classList.add('clicked');
+    aiAttack();
     checkWin();
+}
+
+function aiAttack() {
+    const botMove = ai.computerSelection();
+    const { row, col } = botMove;
+    console.log("row: " + row + " " + "col: " + col);
+    const cellElement = document.getElementById(`${"board1"}-${row}-${col}`);
+    const attackedShip = player.board.board[row][col].shipInfo;
+
+    if (botMove && player.board.receiveAttack(row, col)) {
+        cellElement.classList.remove('cell-s');
+        cellElement.classList.add('cell-h');
+        cellElement.innerText = "⦿";
+        if (attackedShip.sunk) {
+            updateSurroundingCells(attackedShip, "board1");
+        }
+    } else {
+        cellElement.classList.remove('cell-n');
+        cellElement.innerText = "○";
+        cellElement.classList.add('cell-m');    }
 }
 
 function updateSurroundingCells(ship, boardId) {
