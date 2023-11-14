@@ -16,21 +16,54 @@ const createBoard = () => {
         board.push(row);
     };
 
-    const placeShip = function(ship, row, col, direction) {
-        if (row >= 0 && row + ship.length < boardSize && col >= 0 && col + ship.length < boardSize) {
+    const placeShip = function (ship, row, col, isHor) {
+        const result = checkSurroundingCell(ship, row, col, true);
+
+        if (result.success) {
+            ship.surCells = result.surCells;
+
             for (let i = 0; i < ship.length; i++) {
-                if (direction === "vertical") {
-                    board[row][col].shipInfo = ship;
-                    row++;
-                } else {
+                if (isHor) {
                     board[row][col].shipInfo = ship;
                     col++;
+                } else {
+                    board[row][col].shipInfo = ship;
+                    row++;
                 }
             }
         } else {
             throw new Error("Ship placement is out of bounds");
         }
     };
+
+    function checkSurroundingCell(ship, row, col, isHor) {
+        let curRow = 0;
+        let curCol = 0;
+        let surCells = [];
+    
+        for (let i = 0; i < ship.length; i++) {
+            for (let ni = -1; ni <= 1; ni++) {
+                for (let nj = -1; nj <= 1; nj++) {
+                    curRow = row + ni;
+                    curCol = col + nj;
+                    if (curRow >= 0 && curRow < board.length && curCol >= 0 && curCol < board.length) {
+                        surCells.push({ row: curRow, col: curCol });
+                        if (board[curRow][curCol].shipInfo !== null) {
+                            return { success: false, surCells };
+                        }
+                    }
+                }
+            }
+            if (isHor) {
+                col++;
+            } else {
+                row++;
+            }
+        }
+    
+        return { success: true, surCells };
+    }
+    
 
     const receiveAttack = function(row, col) {
         const cellAttack = board[row][col];

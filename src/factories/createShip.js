@@ -6,7 +6,6 @@ const createShip = (length, hitTimes = 0, sunk = false) => {
     const isSunk = function() {
         if (this.hitTimes === this.length) {
             this.sunk = true;
-            console.log(" Ship is sunk!")
         }
     }
     return {
@@ -15,6 +14,7 @@ const createShip = (length, hitTimes = 0, sunk = false) => {
       sunk: sunk,
       hit: hit,
       isSunk: isSunk,
+      surCells: [], //to store surrounding cells
     }
 };
   

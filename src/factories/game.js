@@ -29,8 +29,10 @@ const createShips = () => {
 }
 
 const assignShips = (board) => {
+    let row = 0;
     for (let i = 0; i < createShips().length; i++) {
-        board.placeShip(createShips()[i], i, 0, 'horizontal')
+        board.placeShip(createShips()[i], row, 0, 'horizontal')
+        row += 2;
     }
 };
 
