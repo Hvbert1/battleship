@@ -48,6 +48,7 @@ function loadBoard(board, id) {
             } else {
                 cell.classList.add('cell-n');
             }
+            cell.innerText = `${i}-${j}`;
             cell.id = `${id}-${i}-${j}`;
             cell.addEventListener('click', handleClick);
             row.appendChild(cell);
@@ -78,6 +79,7 @@ function handleClick(event) {
         cell.innerText = "○";
         cell.classList.add('cell-m');
     }
+    console.log(ai.board.board);
     cell.classList.add('clicked');
     aiAttack();
     checkWin();

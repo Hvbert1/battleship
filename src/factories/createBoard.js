@@ -17,10 +17,13 @@ const createBoard = () => {
     };
 
     const placeShip = function (ship, row, col, isHor) {
-        const result = checkSurroundingCell(ship, row, col, true);
+        const result = checkSurroundingCell(ship, row, col, isHor);
+        const maxHor = col + ship.length - 1;
+        const maxVert = row + ship.length - 1;
 
-        if (result.success) {
-            ship.surCells = result.surCells;
+        if ((isHor && maxHor < board.length || !isHor && maxVert < board.length) && result.success ) {      // check if surrounding cells pass && if ship is within board
+
+            ship.surCells = result.surCells;    // append surrounding to ship
 
             for (let i = 0; i < ship.length; i++) {
                 if (isHor) {
@@ -32,7 +35,7 @@ const createBoard = () => {
                 }
             }
         } else {
-            throw new Error("Ship placement is out of bounds");
+            throw new Error("Ship placement is invalid");
         }
     };
 
@@ -42,15 +45,15 @@ const createBoard = () => {
         let surCells = [];
     
         for (let i = 0; i < ship.length; i++) {
-            for (let ni = -1; ni <= 1; ni++) {
+            for (let ni = -1; ni <= 1; ni++) {      //loops from -1 to 1 checking all surrounding cells
                 for (let nj = -1; nj <= 1; nj++) {
                     curRow = row + ni;
                     curCol = col + nj;
-                    if (curRow >= 0 && curRow < board.length && curCol >= 0 && curCol < board.length) {
-                        surCells.push({ row: curRow, col: curCol });
+                    if (curRow >= 0 && curRow < board.length && curCol >= 0 && curCol < board.length) {     // check only for cells within the board
                         if (board[curRow][curCol].shipInfo !== null) {
-                            return { success: false, surCells };
+                            return { success: false };
                         }
+                        surCells.push({ row: curRow, col: curCol });
                     }
                 }
             }
@@ -60,9 +63,8 @@ const createBoard = () => {
                 row++;
             }
         }
-    
         return { success: true, surCells };
-    }
+    };
     
 
     const receiveAttack = function(row, col) {
