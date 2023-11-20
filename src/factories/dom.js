@@ -6,9 +6,9 @@ function loadHeader() {
     let headerContainer = document.createElement("div");
     headerContainer.id = "headerContainer";
 
-    let header = document.createElement("div")
+    let header = document.createElement("h1")
     header.id = "header";
-    header.innerText = "Battleship"
+    header.textContent = "Battleship"
 
     headerContainer.appendChild(header);
 
