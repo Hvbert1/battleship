@@ -23,7 +23,7 @@ const createPlayer = (board, name) => {
 
 const createBot = (board, name) => {
     const {changeTurn, getCurrentTurn} = createPlayer(board, name);
-    const allShots = [];
+    const occupiedSquares = [];
 
     const randomNumber = () => {
         return Math.floor(Math.random() * 10);
@@ -36,8 +36,8 @@ const createBot = (board, name) => {
             let randRow = randomNumber();
             let randCol = randomNumber();
     
-            if (!allShots.find((shot) => shot.row === randRow && shot.col === randCol)) {
-                allShots.push({ row: randRow, col: randCol });
+            if (!occupiedSquares.find((shot) => shot.row === randRow && shot.col === randCol)) {
+                occupiedSquares.push({ row: randRow, col: randCol });
                 return { row: randRow, col: randCol };
             }
             maxAttempts--;
@@ -45,9 +45,15 @@ const createBot = (board, name) => {
         return false; 
     };
 
+    const addDestroyedSquare = (square) => {
+        occupiedSquares.push(square);
+    };
+
+
     return {
         board: board,
         name: name,
+        addDestroyedSquare,
         changeTurn,
         getCurrentTurn,
         randomNumber,

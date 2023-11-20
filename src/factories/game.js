@@ -30,7 +30,7 @@ const createShips = () => {
 }
 
 const assignShipsRecursive = (board, ships) => {
-    // Base case: all ships are placed
+    // base case: all ships are placed
     if (ships.length === 0) {
         return;
     }

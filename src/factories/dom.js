@@ -79,7 +79,6 @@ function handleClick(event) {
         cell.innerText = "○";
         cell.classList.add('cell-m');
     }
-    console.log(ai.board.board);
     cell.classList.add('clicked');
     aiAttack();
     checkWin();
@@ -111,7 +110,11 @@ function updateSurroundingCells(ship, boardId) {
         if (cellElement) {
             cellElement.innerText = "✘";
             cellElement.classList.add('clicked');
-        }
+
+            if (boardId === 'board1') {
+                ai.addDestroyedSquare({ row: cell.row, col: cell.col });
+            }
+        };
     });
 }
 
