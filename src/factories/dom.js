@@ -1,7 +1,6 @@
 const mainGameLoop = require('../factories/game');
 const { player, ai } = mainGameLoop();
 
-
 function loadHeader() {
     let headerContainer = document.createElement("div");
     headerContainer.id = "headerContainer";
@@ -47,7 +46,6 @@ function loadMain() {
 
     document.getElementById("content").appendChild(mainContainer);
 }
-
 
 function loadBoard(board, id) {
     let grid = document.createElement("div");
@@ -111,7 +109,13 @@ function aiAttack() {
         cellElement.classList.remove('cell-s');
         cellElement.classList.add('cell-h');
         cellElement.innerText = "⦿";
+
+        for (let i = 0; i < attackedShip.surCells.length; i++) {
+            ai.addCell(attackedShip.surCells[i], ai.prioCells);
+        }
+
         if (attackedShip.sunk) {
+            ai.prioCells.length = 0;      //clear cells
             updateSurroundingCells(attackedShip, "board1");
         }
     } else {
@@ -129,7 +133,7 @@ function updateSurroundingCells(ship, boardId) {
             cellElement.classList.add('clicked');
 
             if (boardId === 'board1') {
-                ai.addDestroyedSquare({ row: cell.row, col: cell.col });
+                ai.addCell({ row: cell.row, col: cell.col }, ai.occupiedSquares);
             }
         };
     });

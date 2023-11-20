@@ -49,11 +49,13 @@ const createBoard = () => {
                 for (let nj = -1; nj <= 1; nj++) {
                     curRow = row + ni;
                     curCol = col + nj;
-                    if (curRow >= 0 && curRow < board.length && curCol >= 0 && curCol < board.length) {     // check only for cells within the board
-                        if (board[curRow][curCol].shipInfo !== null) {
-                            return { success: false };
+                    if (curRow >= 0 && curRow < board.length && curCol >= 0 && curCol < board.length) { 
+                        if (!surCells.find((cell) => cell.row === curRow && cell.col === curCol)) {     //check for duplicate cells being added
+                            if (board[curRow][curCol].shipInfo !== null) {
+                                return { success: false };
+                            }
+                            surCells.push({ row: curRow, col: curCol });
                         }
-                        surCells.push({ row: curRow, col: curCol });
                     }
                 }
             }
