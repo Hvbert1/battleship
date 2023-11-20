@@ -45,10 +45,9 @@ const createBot = (board, name) => {
         return false; 
     };
 
-    const addDestroyedSquare = (square) => {
-        occupiedSquares.push(square);
+    const addDestroyedSquare = (cell) => {
+        occupiedSquares.push(cell);
     };
-
 
     return {
         board: board,

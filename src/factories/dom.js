@@ -19,17 +19,35 @@ function loadMain() {
     let mainContainer = document.createElement("div");
     mainContainer.id = "mainContainer";
 
-    let board1 = loadBoard(player.board, "board1");    
-    board1.id = "board1";  
+    let boardContainer1 = document.createElement("div");
+    boardContainer1.classList.add("boardContainer");
+
+    let board1 = loadBoard(player.board, "board1");
+    board1.id = "board1";
+
+    let boardContainer2 = document.createElement("div");
+    boardContainer2.classList.add("boardContainer");
 
     let board2 = loadBoard(ai.board, "board2");
-    board2.id = "board2";  
+    board2.id = "board2";
 
-    mainContainer.appendChild(board1);
-    mainContainer.appendChild(board2);
+    let heading1 = document.createElement("h3");
+    heading1.textContent = "Player Board";
+    boardContainer1.appendChild(heading1);
+
+    let heading2 = document.createElement("h3");
+    heading2.textContent = "AI Board";
+    boardContainer2.appendChild(heading2);
+
+    boardContainer1.appendChild(board1);
+    boardContainer2.appendChild(board2);
+
+    mainContainer.appendChild(boardContainer1);
+    mainContainer.appendChild(boardContainer2);
 
     document.getElementById("content").appendChild(mainContainer);
-};
+}
+
 
 function loadBoard(board, id) {
     let grid = document.createElement("div");
@@ -48,7 +66,6 @@ function loadBoard(board, id) {
             } else {
                 cell.classList.add('cell-n');
             }
-            cell.innerText = `${i}-${j}`;
             cell.id = `${id}-${i}-${j}`;
             cell.addEventListener('click', handleClick);
             row.appendChild(cell);
@@ -87,7 +104,6 @@ function handleClick(event) {
 function aiAttack() {
     const botMove = ai.computerSelection();
     const { row, col } = botMove;
-    console.log("row: " + row + " " + "col: " + col);
     const cellElement = document.getElementById(`${"board1"}-${row}-${col}`);
     const attackedShip = player.board.board[row][col].shipInfo;
 
@@ -101,7 +117,8 @@ function aiAttack() {
     } else {
         cellElement.classList.remove('cell-n');
         cellElement.innerText = "○";
-        cellElement.classList.add('cell-m');    }
+        cellElement.classList.add('cell-m');    
+    }
 }
 
 function updateSurroundingCells(ship, boardId) {

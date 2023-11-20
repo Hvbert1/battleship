@@ -15,7 +15,7 @@ const mainGameLoop = () => {
     assignShipsRecursive(botBoard, botShips);
 
     return { player, ai };
-}
+};
 
 const createShips = () => {
     const shipNames = ['carrier', 'battleship', 'destroyer', 'submarine', 'patrolBoat'];
@@ -27,7 +27,7 @@ const createShips = () => {
         allShips.push(newShip);
     }
     return allShips;
-}
+};
 
 const assignShipsRecursive = (board, ships) => {
     // base case: all ships are placed

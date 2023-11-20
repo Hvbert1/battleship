@@ -7,9 +7,10 @@ body {
 #content {
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: space-evenly;
     align-items: center;
     height: 100vh;
+    color: #344B60;
 }
 
 #header {
@@ -45,6 +46,16 @@ body {
     flex: 1;
     width: 2rem;
 	height: 2rem;
+    color: black;
+}
+
+.cell:hover {
+    color: #A7B7BF;
+    cursor: pointer;
+}
+
+.cell.clicked:hover {
+    color: black;
 }
 
 .cell-s {
@@ -57,4 +68,12 @@ body {
 
 .cell-h {
     background: #B55459;
+}
+
+#board1 {
+    pointer-events: none;
+}
+
+#board2 .cell-s {
+    background: none;
 }
