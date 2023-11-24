@@ -70,10 +70,14 @@ body {
     background: #B55459;
 }
 
-#board1 {
+/* #board1 {
     pointer-events: none;
-}
+} */
 
 #board2 .cell-s {
     background: none;
+}
+
+.drag-over {
+    background-color: #A7B7BF;
 }

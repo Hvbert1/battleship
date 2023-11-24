@@ -43,7 +43,9 @@ const assignShipsRecursive = (board, ships) => {
 
     try {
         board.placeShip(ship, randRow, randCol, randDir);
+        ship.isHor = randDir;
         assignShipsRecursive(board, ships.slice(1)); // call function with left over ships
+
     } catch (error) {
         assignShipsRecursive(board, ships); // retry ship placement
     }

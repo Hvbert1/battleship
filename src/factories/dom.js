@@ -1,4 +1,5 @@
 const mainGameLoop = require('../factories/game');
+const checkSurroundingCell = require('../factories/createBoard');
 const { player, ai } = mainGameLoop();
 
 function loadHeader() {
@@ -61,9 +62,17 @@ function loadBoard(board, id) {
 
             if (board.board[i][j].shipInfo !== null) {
                 cell.classList.add('cell-s');
+                cell.draggable = true;
+                cell.addEventListener('dragstart', dragStart);
+                cell.isHor = board.board[i][j].shipInfo.isHor;
             } else {
                 cell.classList.add('cell-n');
+                cell.addEventListener('dragenter', dragEnter)
+                cell.addEventListener('dragover', dragOver);
+                cell.addEventListener('dragleave', dragLeave);
+                cell.addEventListener('drop', drop);
             }
+            cell.innerHTML = `${i}-${j}`;
             cell.id = `${id}-${i}-${j}`;
             cell.addEventListener('click', handleClick);
             row.appendChild(cell);
@@ -71,6 +80,85 @@ function loadBoard(board, id) {
     }
     return grid;
 };
+
+let isHor;
+
+function dragStart(e) {
+    e.dataTransfer.setData('text/plain', e.target.id);
+    const cell = e.target;
+    const cellId = cell.id;
+    const [board, row, col] = cellId.split('-');
+    const selectedShip = player.board.board[row][col].shipInfo;
+    isHor = selectedShip.isHor;
+    console.log(selectedShip);
+
+    console.log("original dir: " + selectedShip.isHor);
+
+}
+
+function dragEnter(e) {
+    e.preventDefault();
+    e.target.classList.add('drag-over');
+}
+
+function dragOver(e) {
+    e.preventDefault();
+    e.target.classList.add('drag-over');
+
+    // get the draggable element
+    const id = e.dataTransfer.getData('text/plain');
+    const [board, row, col] = id.split('-');
+    const selectedShip = player.board.board[row][col].shipInfo;
+
+    const newCellId = e.target.id;
+    let [newBoard, newRow, newCol] = newCellId.split('-');
+
+    player.board.displayShip(selectedShip, newRow, newCol, isHor);
+}
+
+function dragLeave(e) {
+    e.target.classList.remove('drag-over');
+
+    const id = e.dataTransfer.getData('text/plain');
+    const [board, row, col] = id.split('-');
+    const selectedShip = player.board.board[row][col].shipInfo;
+
+    const newCellId = e.target.id;
+    let [newBoard, newRow, newCol] = newCellId.split('-');
+
+    let oldSurCells = player.board.displayShip(selectedShip, newRow, newCol, isHor);
+
+    oldSurCells.forEach(cell => {
+        let cellElement = document.getElementById("board1-" + cell.row + "-" + cell.col);
+        cellElement.classList.remove('drag-over');
+    });
+}
+
+
+function drop(e) {
+    e.target.classList.remove('drag-over');
+
+    // get the draggable element
+    const id = e.dataTransfer.getData('text/plain');
+    const [board, row, col] = id.split('-');
+    const oldShip = player.board.board[row][col].shipInfo;
+
+    const newCellId = e.target.id;
+    const [newBoard, newRow, newCol] = newCellId.split('-');
+    
+    oldShip.surCells.forEach(cell => {
+        player.board.board[cell.row][cell.col].shipInfo = null;
+    });
+
+    player.board.placeShip(oldShip, newRow, newCol, isHor);
+    console.log("final dir: " + isHor);
+
+    const contentDiv = document.getElementById('mainContainer');
+
+    // Clear the content of the div
+    contentDiv.remove();
+    loadMain();
+}
 
 function handleClick(event) {
     const cell = event.target;
