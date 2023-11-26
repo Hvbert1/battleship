@@ -134,32 +134,6 @@ function dragLeave(e) {
     });
 }
 
-
-function drop(e) {
-    e.target.classList.remove('drag-over');
-
-    // get the draggable element
-    const id = e.dataTransfer.getData('text/plain');
-    const [board, row, col] = id.split('-');
-    const oldShip = player.board.board[row][col].shipInfo;
-
-    const newCellId = e.target.id;
-    const [newBoard, newRow, newCol] = newCellId.split('-');
-    
-    oldShip.surCells.forEach(cell => {
-        player.board.board[cell.row][cell.col].shipInfo = null;
-    });
-
-    player.board.placeShip(oldShip, newRow, newCol, isHor);
-    console.log("final dir: " + isHor);
-
-    const contentDiv = document.getElementById('mainContainer');
-
-    // Clear the content of the div
-    contentDiv.remove();
-    loadMain();
-}
-
 function drop(e) {
     e.target.classList.remove('drag-over');
 
