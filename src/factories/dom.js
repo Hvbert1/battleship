@@ -1,17 +1,38 @@
 const mainGameLoop = require('../factories/game');
-const checkSurroundingCell = require('../factories/createBoard');
-const { set } = require('lodash');
 const { player, ai } = mainGameLoop();
+
+let gameState = "setUp";
 
 function loadHeader() {
     let headerContainer = document.createElement("div");
     headerContainer.id = "headerContainer";
 
+    let titleContainer = document.createElement("div");
+    titleContainer.id = "titleContainer";
+
     let header = document.createElement("h1")
     header.id = "header";
     header.textContent = "Battleship"
 
-    headerContainer.appendChild(header);
+    let startBtn = document.createElement("button")
+    startBtn.id = "btn";
+    startBtn.innerText = "Start Game";
+    startBtn.addEventListener("click", function (e) {
+        e.preventDefault;
+        gameState = "start";
+        console.log(gameState);
+
+        const contentDiv = document.getElementById('mainContainer');
+        contentDiv.remove();
+        header.remove();
+        startBtn.remove();
+        loadPage();
+    });
+
+    titleContainer.appendChild(header);
+    titleContainer.appendChild(startBtn);
+
+    headerContainer.appendChild(titleContainer);
 
     document.getElementById("content").appendChild(headerContainer);
 }
@@ -68,18 +89,46 @@ function loadBoard(board, id) {
                 cell.isHor = board.board[i][j].shipInfo.isHor;
             } else {
                 cell.classList.add('cell-n');
-                cell.addEventListener('dragenter', dragEnter)
                 cell.addEventListener('dragover', dragOver);
                 cell.addEventListener('dragleave', dragLeave);
                 cell.addEventListener('drop', drop);
             }
-            cell.innerHTML = `${i}-${j}`;
             cell.id = `${id}-${i}-${j}`;
-            cell.addEventListener('click', handleClick);
+            if (id === "board2") {
+                cell.addEventListener('click', handleClick);
+            }
             row.appendChild(cell);
         }
     }
     return grid;
+};
+
+function checkGameState() {
+    const playerBoard = document.getElementById('board1');
+    const aiBoard = document.getElementById('board2');
+    const btn = document.getElementById('btn');
+    const header = document.getElementById('headerContainer');
+
+    if (gameState === "setUp") {
+        aiBoard.style.pointerEvents = 'none';
+
+        let gameInfo = document.createElement("h4");
+        gameInfo.id = "gameInfo";
+        gameInfo.innerHTML = "Drag and rotate (using 'r' key) ships. Press 'Start' to being. <br>Note: ships cannot be placed within 1 cell of each other";        
+
+        header.appendChild(gameInfo);
+    } else {
+        playerBoard.style.pointerEvents = 'none';
+        btn.parentNode.removeChild(btn);
+        gameInfo.remove();
+    }
+}
+
+
+function loadPage() {
+    loadHeader();
+    loadMain();
+    checkGameState();
 };
 
 let lastShip;
@@ -88,7 +137,6 @@ let lastCol;
 
 document.addEventListener('keydown', function(e) {
     if (e.key === 'r') {
-        console.log(lastShip.surCells);
         try {
             lastShip.surCells.forEach(cell => {
                 player.board.board[cell.row][cell.col].shipInfo = null;
@@ -96,17 +144,14 @@ document.addEventListener('keydown', function(e) {
 
             lastShip.changeDir(lastShip.isHor);
 
-            console.log("last row: " + lastRow + "last col: " + lastCol);
             player.board.placeShip(lastShip, lastRow, lastCol, lastShip.isHor);
-            console.log("final dir: " + lastShip.isHor);
 
             const contentDiv = document.getElementById('mainContainer');
 
             contentDiv.remove();
             loadMain();
-            console.log("shifted");
         } catch (error) {
-            console.log("caught error, doing old ship placement");
+            console.log("Caught error for ship rotation");
             player.board.placeShip(lastShip, lastRow, lastCol, !lastShip.isHor);
         }
     }
@@ -121,11 +166,6 @@ function dragStart(e) {
     lastShip = selectedShip;
     lastRow = row;
     lastCol = col;
-}
-
-function dragEnter(e) {
-    e.preventDefault();
-    e.target.classList.add('drag-over');
 }
 
 function dragOver(e) {
@@ -176,8 +216,6 @@ function drop(e) {
         oldShip.surCells.forEach(cell => {
             player.board.board[cell.row][cell.col].shipInfo = null;
         });
-
-        console.log(oldShip.length);
 
         player.board.placeShip(oldShip, newRow, newCol, oldShip.isHor);
         console.log("final dir: " + oldShip.isHor);
@@ -275,10 +313,5 @@ function checkWin() {
         return;
     }
 }
-
-function loadPage() {
-    loadHeader();
-    loadMain();
-};
 
 module.exports = loadPage;
