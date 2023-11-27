@@ -98,3 +98,17 @@ body {
 .drag-over {
     background-color: #A7B7BF;
 }
+
+@media only screen and (max-width: 600px) {
+    #content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #mainContainer {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+    }
+}
