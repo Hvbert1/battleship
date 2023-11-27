@@ -93,7 +93,6 @@ const createBoard = () => {
 
 
     function displayShip(ship, row, col, isHor) {
-        
         let tempSurCells;
         let result = checkSurroundingCell(ship, row, col, isHor);
         let maxHor = Number(col) + Number(ship.length - 1);
@@ -104,7 +103,7 @@ const createBoard = () => {
 
             for (let i = 0; i < ship.length; i++) {
                 let cellId = `${row}-${col}`;
-                let cellElement = document.getElementById("board1-"+cellId);
+                let cellElement = document.getElementById("board1-" + cellId);
 
                 cellElement.classList.add('drag-over'); // Add a class to indicate the presence of the ship
 

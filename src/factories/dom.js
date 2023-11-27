@@ -1,5 +1,6 @@
 const mainGameLoop = require('../factories/game');
 const checkSurroundingCell = require('../factories/createBoard');
+const { set } = require('lodash');
 const { player, ai } = mainGameLoop();
 
 function loadHeader() {
@@ -81,7 +82,35 @@ function loadBoard(board, id) {
     return grid;
 };
 
-let isHor;
+let lastShip;
+let lastRow;
+let lastCol;
+
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'r') {
+        console.log(lastShip.surCells);
+        try {
+            lastShip.surCells.forEach(cell => {
+                player.board.board[cell.row][cell.col].shipInfo = null;
+            });
+
+            lastShip.changeDir(lastShip.isHor);
+
+            console.log("last row: " + lastRow + "last col: " + lastCol);
+            player.board.placeShip(lastShip, lastRow, lastCol, lastShip.isHor);
+            console.log("final dir: " + lastShip.isHor);
+
+            const contentDiv = document.getElementById('mainContainer');
+
+            contentDiv.remove();
+            loadMain();
+            console.log("shifted");
+        } catch (error) {
+            console.log("caught error, doing old ship placement");
+            player.board.placeShip(lastShip, lastRow, lastCol, !lastShip.isHor);
+        }
+    }
+});
 
 function dragStart(e) {
     e.dataTransfer.setData('text/plain', e.target.id);
@@ -89,11 +118,9 @@ function dragStart(e) {
     const cellId = cell.id;
     const [board, row, col] = cellId.split('-');
     const selectedShip = player.board.board[row][col].shipInfo;
-    isHor = selectedShip.isHor;
-    console.log(selectedShip);
-
-    console.log("original dir: " + selectedShip.isHor);
-
+    lastShip = selectedShip;
+    lastRow = row;
+    lastCol = col;
 }
 
 function dragEnter(e) {
@@ -113,7 +140,7 @@ function dragOver(e) {
     const newCellId = e.target.id;
     let [newBoard, newRow, newCol] = newCellId.split('-');
 
-    player.board.displayShip(selectedShip, newRow, newCol, isHor);
+    player.board.displayShip(selectedShip, newRow, newCol, selectedShip.isHor);
 }
 
 function dragLeave(e) {
@@ -126,7 +153,7 @@ function dragLeave(e) {
     const newCellId = e.target.id;
     let [newBoard, newRow, newCol] = newCellId.split('-');
 
-    let oldSurCells = player.board.displayShip(selectedShip, newRow, newCol, isHor);
+    let oldSurCells = player.board.displayShip(selectedShip, newRow, newCol, selectedShip.isHor);
 
     oldSurCells.forEach(cell => {
         let cellElement = document.getElementById("board1-" + cell.row + "-" + cell.col);
@@ -150,15 +177,20 @@ function drop(e) {
             player.board.board[cell.row][cell.col].shipInfo = null;
         });
 
-        player.board.placeShip(oldShip, newRow, newCol, isHor);
-        console.log("final dir: " + isHor);
+        console.log(oldShip.length);
+
+        player.board.placeShip(oldShip, newRow, newCol, oldShip.isHor);
+        console.log("final dir: " + oldShip.isHor);
 
         const contentDiv = document.getElementById('mainContainer');
+        lastRow = newRow;
+        lastCol = newCol;
 
         contentDiv.remove();
         loadMain();
     } catch (error) {
-        player.board.placeShip(oldShip, row, col, isHor);
+        console.log("caught error, doing old ship placement");
+        player.board.placeShip(oldShip, row, col, oldShip.isHor);
     }
 }
 

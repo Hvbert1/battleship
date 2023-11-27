@@ -5,15 +5,14 @@ const createShip = (length, hitTimes = 0, sunk = false) => {
       this.hitTimes++;
       this.isSunk();
     }
+
     const isSunk = function() {
         if (this.hitTimes === this.length) {
             this.sunk = true;
         }
     }
 
-    const setIsHor = function(val) {
-      let i = 0;
-      console.log(++i);
+    const changeDir = function(val) {
       console.log("old orientation: " + val);
       if (val === true) {
         this.isHor = false;
@@ -31,7 +30,7 @@ const createShip = (length, hitTimes = 0, sunk = false) => {
       hit: hit,
       isSunk: isSunk,
       surCells: [], //to store surrounding cells
-      setIsHor: setIsHor,
+      changeDir: changeDir,
     }
 };
   
