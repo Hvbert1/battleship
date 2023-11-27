@@ -3,20 +3,19 @@ const createBoard = () => {
     const board = [];
     const missedShots = []
 
-    for (let i = 0; i < boardSize; i++) {
-        const row = [];
-        for (let j = 0; j < boardSize; j++) {
-            const cell = {
-                row: i,
-                col: j,
-                shipInfo: null,
-            };
-            row.push(cell);
+
+    function initializeBoard() {
+        for (let i = 0; i < boardSize; i++) {
+            const row = [];
+            for (let j = 0; j < boardSize; j++) {
+                const cell = { row: i, col: j, shipInfo: null };
+                row.push(cell);
+            }
+            board.push(row);
         }
-        board.push(row);
     };
 
-    const placeShip = function (ship, row, col, isHor) {
+    function placeShip (ship, row, col, isHor) {
         const result = checkSurroundingCell(ship, row, col, isHor);
         const maxHor = Number(col) + Number(ship.length - 1);
         const maxVert = Number(row) + Number(ship.length - 1);
@@ -39,8 +38,7 @@ const createBoard = () => {
     };
 
     function checkSurroundingCell(ship, row, col, isHor) {
-        let curRow = 0;
-        let curCol = 0;
+        let curRow, curCol;
         let surCells = [];
     
         for (let i = 0; i < ship.length; i++) {
@@ -48,6 +46,7 @@ const createBoard = () => {
                 for (let nj = -1; nj <= 1; nj++) {
                     curRow = Number(row) + ni;
                     curCol = Number(col) + nj;
+
                     if (curRow >= 0 && curRow < board.length && curCol >= 0 && curCol < board.length) { 
                         if (!surCells.find((cell) => cell.row === curRow && cell.col === curCol)) {     //check for duplicate cells being added
                             if (board[curRow][curCol].shipInfo !== null) {
@@ -91,13 +90,12 @@ const createBoard = () => {
     };
 
     function displayShip(ship, row, col, isHor) {
-        let tempSurCells;
         let result = checkSurroundingCell(ship, row, col, isHor);
         let maxHor = Number(col) + Number(ship.length - 1);
         let maxVert = Number(row) + Number(ship.length - 1);
 
         if ((isHor && maxHor < 10 || !isHor && maxVert < 10) && result.success) {
-            tempSurCells = result.surCells;
+            const tempSurCells = result.surCells;
 
             for (let i = 0; i < ship.length; i++) {
                 let cellId = `${row}-${col}`;
@@ -116,6 +114,8 @@ const createBoard = () => {
             throw new Error("Ship placement is invalid to display");
         }
     };
+
+    initializeBoard();
     
     return {
         board,
