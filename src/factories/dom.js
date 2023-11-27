@@ -121,7 +121,7 @@ function checkGameState() {
     } else {
         playerBoard.style.pointerEvents = 'none';
         btn.parentNode.removeChild(btn);
-        gameInfo.remove();
+        header.remove();
     }
 };
 
@@ -164,7 +164,7 @@ function dragOver(e) {
 
     // get the draggable element
     const id = e.dataTransfer.getData('text/plain');
-    const [board, row, col] = id.split('-');
+    const [, row, col] = id.split('-');
     const selectedShip = player.board.board[row][col].shipInfo;
 
     const newCellId = e.target.id;
@@ -181,7 +181,7 @@ function dragLeave(e) {
     e.target.classList.remove('drag-over');
 
     const id = e.dataTransfer.getData('text/plain');
-    const [board, row, col] = id.split('-');
+    const [, row, col] = id.split('-');
     const selectedShip = player.board.board[row][col].shipInfo;
 
     const newCellId = e.target.id;
@@ -203,7 +203,7 @@ function drop(e) {
 
     // get the draggable element
     const id = e.dataTransfer.getData('text/plain');
-    const [board, row, col] = id.split('-');
+    const [, row, col] = id.split('-');
     const oldShip = player.board.board[row][col].shipInfo;
 
     const newCellId = e.target.id;
@@ -232,7 +232,7 @@ function drop(e) {
 function handleClick(event) {
     const cell = event.target;
     const cellId = cell.id;
-    const [board, row, col] = cellId.split('-');
+    const [, row, col] = cellId.split('-');
 
     if (cell.classList.contains('clicked')) {
         return;
@@ -297,18 +297,21 @@ function updateSurroundingCells(ship, boardId) {
 };
 
 function checkWin() {
-    let title = document.getElementById("header");
     const playerBoard = document.getElementById('board1');
     const aiBoard = document.getElementById('board2');
+    const header = document.getElementById('headerContainer');
+    let resultInfo = document.createElement("h2");
 
     if (ai.board.allShipsSunk()) {
-        title.textContent += "...YOU WIN! 🥳 ";
+        resultInfo.innerHTML = "...YOU WIN! 🥳 ";        
         aiBoard.style.pointerEvents = 'none';
         playerBoard.style.pointerEvents = 'none';
+        header.appendChild(resultInfo);
     } else if (player.board.allShipsSunk()) {
-        title.textContent += "... you lose 🥈, 🔄 to try again";
+        resultInfo.innerHTML =  "... you lose 🥈, refresh to try again";
         aiBoard.style.pointerEvents = 'none';
         playerBoard.style.pointerEvents = 'none';
+        header.appendChild(resultInfo);
     } else {
         return;
     }

@@ -20,7 +20,7 @@ const createBoard = () => {
         const maxHor = Number(col) + Number(ship.length - 1);
         const maxVert = Number(row) + Number(ship.length - 1);
 
-        if ((isHor && maxHor < board.length || !isHor && maxVert < board.length) && result.success ) {      // check if surrounding cells pass && if ship is within board
+        if ((isHor && maxHor < boardSize || !isHor && maxVert < boardSize) && result.success ) {      // check if surrounding cells pass && if ship is within board
             ship.surCells = result.surCells;    // append surrounding to ship
 
             for (let i = 0; i < ship.length; i++) {
@@ -47,7 +47,7 @@ const createBoard = () => {
                     curRow = Number(row) + ni;
                     curCol = Number(col) + nj;
 
-                    if (curRow >= 0 && curRow < board.length && curCol >= 0 && curCol < board.length) { 
+                    if (curRow >= 0 && curRow < boardSize && curCol >= 0 && curCol < boardSize) { 
                         if (!surCells.find((cell) => cell.row === curRow && cell.col === curCol)) {     //check for duplicate cells being added
                             if (board[curRow][curCol].shipInfo !== null) {
                                 return { success: false };
@@ -94,7 +94,7 @@ const createBoard = () => {
         let maxHor = Number(col) + Number(ship.length - 1);
         let maxVert = Number(row) + Number(ship.length - 1);
 
-        if ((isHor && maxHor < 10 || !isHor && maxVert < 10) && result.success) {
+        if ((isHor && maxHor < boardSize || !isHor && maxVert < boardSize) && result.success) {
             const tempSurCells = result.surCells;
 
             for (let i = 0; i < ship.length; i++) {
