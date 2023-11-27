@@ -7,14 +7,14 @@ body {
 #content {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     height: 100vh;
     color: #344B60;
 }
 
 #header {
-    font-size: 2rem;
+    font-size: 3rem;
 }
 
 #titleContainer {

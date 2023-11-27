@@ -20,7 +20,6 @@ function loadHeader() {
     startBtn.addEventListener("click", function (e) {
         e.preventDefault;
         gameState = "start";
-        console.log(gameState);
 
         const contentDiv = document.getElementById('mainContainer');
         contentDiv.remove();
@@ -151,7 +150,6 @@ document.addEventListener('keydown', function(e) {
             contentDiv.remove();
             loadMain();
         } catch (error) {
-            console.log("Caught error for ship rotation");
             player.board.placeShip(lastShip, lastRow, lastCol, !lastShip.isHor);
         }
     }
@@ -218,7 +216,6 @@ function drop(e) {
         });
 
         player.board.placeShip(oldShip, newRow, newCol, oldShip.isHor);
-        console.log("final dir: " + oldShip.isHor);
 
         const contentDiv = document.getElementById('mainContainer');
         lastRow = newRow;
@@ -227,7 +224,6 @@ function drop(e) {
         contentDiv.remove();
         loadMain();
     } catch (error) {
-        console.log("caught error, doing old ship placement");
         player.board.placeShip(oldShip, row, col, oldShip.isHor);
     }
 }
