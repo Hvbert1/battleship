@@ -2,6 +2,9 @@ const mainGameLoop = require('../factories/game');
 const { player, ai } = mainGameLoop();
 
 let gameState = "setUp";
+let lastShip;
+let lastRow;
+let lastCol;
 
 function loadHeader() {
     let headerContainer = document.createElement("div");
@@ -19,9 +22,8 @@ function loadHeader() {
     startBtn.innerText = "Start Game";
     startBtn.addEventListener("click", function (e) {
         e.preventDefault;
-        gameState = "start";
-
         const contentDiv = document.getElementById('mainContainer');
+        gameState = "start";
         contentDiv.remove();
         header.remove();
         startBtn.remove();
@@ -34,7 +36,7 @@ function loadHeader() {
     headerContainer.appendChild(titleContainer);
 
     document.getElementById("content").appendChild(headerContainer);
-}
+};
 
 function loadMain() {
     let mainContainer = document.createElement("div");
@@ -121,18 +123,7 @@ function checkGameState() {
         btn.parentNode.removeChild(btn);
         gameInfo.remove();
     }
-}
-
-
-function loadPage() {
-    loadHeader();
-    loadMain();
-    checkGameState();
 };
-
-let lastShip;
-let lastRow;
-let lastCol;
 
 document.addEventListener('keydown', function(e) {
     if (e.key === 'r') {
@@ -151,6 +142,7 @@ document.addEventListener('keydown', function(e) {
             loadMain();
         } catch (error) {
             player.board.placeShip(lastShip, lastRow, lastCol, !lastShip.isHor);
+            console.log("error caught")
         }
     }
 });
@@ -164,7 +156,7 @@ function dragStart(e) {
     lastShip = selectedShip;
     lastRow = row;
     lastCol = col;
-}
+};
 
 function dragOver(e) {
     e.preventDefault();
@@ -176,10 +168,14 @@ function dragOver(e) {
     const selectedShip = player.board.board[row][col].shipInfo;
 
     const newCellId = e.target.id;
-    let [newBoard, newRow, newCol] = newCellId.split('-');
+    let [, newRow, newCol] = newCellId.split('-');
 
-    player.board.displayShip(selectedShip, newRow, newCol, selectedShip.isHor);
-}
+    try { 
+        player.board.displayShip(selectedShip, newRow, newCol, selectedShip.isHor);
+    } catch (error) {
+        console.log("error caught")
+    }
+};
 
 function dragLeave(e) {
     e.target.classList.remove('drag-over');
@@ -189,15 +185,18 @@ function dragLeave(e) {
     const selectedShip = player.board.board[row][col].shipInfo;
 
     const newCellId = e.target.id;
-    let [newBoard, newRow, newCol] = newCellId.split('-');
+    let [, newRow, newCol] = newCellId.split('-');
 
-    let oldSurCells = player.board.displayShip(selectedShip, newRow, newCol, selectedShip.isHor);
-
-    oldSurCells.forEach(cell => {
-        let cellElement = document.getElementById("board1-" + cell.row + "-" + cell.col);
-        cellElement.classList.remove('drag-over');
-    });
-}
+    try {
+        let oldSurCells = player.board.displayShip(selectedShip, newRow, newCol, selectedShip.isHor);
+        oldSurCells.forEach(cell => {
+            let cellElement = document.getElementById("board1-" + cell.row + "-" + cell.col);
+            cellElement.classList.remove('drag-over');
+        });
+    } catch (error) {
+        console.log("display error caught")
+    }
+};
 
 function drop(e) {
     e.target.classList.remove('drag-over');
@@ -208,7 +207,7 @@ function drop(e) {
     const oldShip = player.board.board[row][col].shipInfo;
 
     const newCellId = e.target.id;
-    const [newBoard, newRow, newCol] = newCellId.split('-');
+    let [, newRow, newCol] = newCellId.split('-');
 
     try {
         oldShip.surCells.forEach(cell => {
@@ -223,11 +222,12 @@ function drop(e) {
 
         contentDiv.remove();
         loadMain();
+        console.log("drop successful")
     } catch (error) {
         player.board.placeShip(oldShip, row, col, oldShip.isHor);
+        console.log("error caught")
     }
-}
-
+};
 
 function handleClick(event) {
     const cell = event.target;
@@ -254,7 +254,7 @@ function handleClick(event) {
     cell.classList.add('clicked');
     aiAttack();
     checkWin();
-}
+};
 
 function aiAttack() {
     const botMove = ai.computerSelection();
@@ -280,7 +280,7 @@ function aiAttack() {
         cellElement.innerText = "○";
         cellElement.classList.add('cell-m');    
     }
-}
+};
 
 function updateSurroundingCells(ship, boardId) {
     ship.surCells.forEach(cell => {
@@ -294,20 +294,30 @@ function updateSurroundingCells(ship, boardId) {
             }
         };
     });
-}
+};
 
 function checkWin() {
+    let title = document.getElementById("header");
+    const playerBoard = document.getElementById('board1');
+    const aiBoard = document.getElementById('board2');
+
     if (ai.board.allShipsSunk()) {
-        setTimeout(() => {
-            alert('You Win!');
-        }, 1500);
+        title.textContent += "...YOU WIN! 🥳 ";
+        aiBoard.style.pointerEvents = 'none';
+        playerBoard.style.pointerEvents = 'none';
     } else if (player.board.allShipsSunk()) {
-        setTimeout(() => {
-            alert('You Lose!');
-        }, 1500);
+        title.textContent += "... you lose 🥈, 🔄 to try again";
+        aiBoard.style.pointerEvents = 'none';
+        playerBoard.style.pointerEvents = 'none';
     } else {
         return;
     }
-}
+};
+
+function loadPage() {
+    loadHeader();
+    loadMain();
+    checkGameState();
+};
 
 module.exports = loadPage;

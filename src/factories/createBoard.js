@@ -66,7 +66,6 @@ const createBoard = () => {
         }
         return { success: true, surCells };
     };
-    
 
     const receiveAttack = function(row, col) {
         const cellAttack = board[row][col];
@@ -90,7 +89,6 @@ const createBoard = () => {
         }
         return true;
     };
-
 
     function displayShip(ship, row, col, isHor) {
         let tempSurCells;

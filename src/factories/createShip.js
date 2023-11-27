@@ -13,13 +13,10 @@ const createShip = (length, hitTimes = 0, sunk = false) => {
     }
 
     const changeDir = function(val) {
-      console.log("old orientation: " + val);
       if (val === true) {
         this.isHor = false;
-        console.log("new orientation: " + val);
       } else {
         this.isHor = true;
-        console.log("new orientation: " + val);
       }
     }
 
